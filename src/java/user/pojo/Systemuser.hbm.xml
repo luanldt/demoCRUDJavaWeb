@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Mar 27, 2017 4:41:29 PM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="user.pojo.Systemuser" table="SYSTEMUSER" schema="dbo" catalog="HERP" optimistic-lock="version">
+        <id name="id" type="int">
+            <column name="Id" />
+            <generator class="assigned" />
+        </id>
+        <property name="maNhanVien" type="java.lang.String">
+            <column name="MaNhanVien" length="32" />
+        </property>
+        <property name="ho" type="java.lang.String">
+            <column name="Ho" />
+        </property>
+        <property name="ten" type="java.lang.String">
+            <column name="Ten" />
+        </property>
+        <property name="matKhau" type="java.lang.String">
+            <column name="MatKhau" />
+        </property>
+        <property name="gioiTinh" type="java.lang.Integer">
+            <column name="GioiTinh" />
+        </property>
+        <property name="ngaySinh" type="java.lang.String">
+            <column name="NgaySinh" />
+        </property>
+        <property name="noiSinh" type="java.lang.String">
+            <column name="NoiSinh" />
+        </property>
+        <property name="diaChiThuongTru" type="java.lang.String">
+            <column name="DiaChiThuongTru" />
+        </property>
+        <property name="diaChiTamTru" type="java.lang.String">
+            <column name="DiaChiTamTru" />
+        </property>
+        <property name="hinhAnh" type="java.lang.String">
+            <column name="HinhAnh" />
+        </property>
+    </class>
+</hibernate-mapping>
