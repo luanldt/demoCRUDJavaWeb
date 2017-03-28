@@ -43,4 +43,75 @@ public class Systemuserhelper {
 
         return systemusers;
     }
+    
+    public Systemuser findOne(int id) {
+        Systemuser systemuser = null;
+        try {
+            session = HibernateUtil.getSessionFactory().openSession();
+            Query q = session.createQuery("from Systemuser where id = :id");
+            systemuser = (Systemuser) q.setInteger("id", id).list().get(0);
+            
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        } finally {
+            session.close();
+        }
+        return systemuser;
+    }
+    
+    public boolean create(Systemuser systemuser) {
+        boolean result = false;
+        try {
+            session = HibernateUtil.getSessionFactory().openSession();
+            Transaction tx = session.getTransaction();
+            tx.begin();
+            session.saveOrUpdate(systemuser);
+            tx.commit();
+            result = true;
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        } finally {
+            session.close();
+        }
+        return result;
+    }
+    
+    public boolean update(Systemuser systemuser) {
+        boolean result = false;
+        try {
+            session = HibernateUtil.getSessionFactory().openSession();
+//            Transaction tx = session.getTransaction();
+            Transaction tx = session.beginTransaction();
+            session.update(systemuser);
+            tx.commit();
+            result = true;
+            
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        } finally {
+            session.close();
+        }
+        
+        return result;
+    }
+    
+    public boolean delete(int id) {
+        boolean result = false;
+        try {
+            session = HibernateUtil.getSessionFactory().openSession();
+//            Transaction tx = session.getTransaction();
+            Transaction tx = session.beginTransaction();
+            Query q = session.createQuery("from Systemuser where id = :id");
+            Systemuser systemuser = (Systemuser) q.setInteger("id", id).list().get(0);
+            session.delete(systemuser);
+            tx.commit();
+            result = true;
+            
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        } finally {
+            session.close();
+        }
+        return result;
+    }
 }

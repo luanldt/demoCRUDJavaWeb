@@ -6,7 +6,7 @@
     <class name="user.pojo.Systemuser" table="SYSTEMUSER" schema="dbo" catalog="HERP" optimistic-lock="version">
         <id name="id" type="int">
             <column name="Id" />
-            <generator class="assigned" />
+            <generator class="native" />
         </id>
         <property name="maNhanVien" type="java.lang.String">
             <column name="MaNhanVien" length="32" />
