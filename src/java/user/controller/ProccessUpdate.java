@@ -36,7 +36,7 @@ public class ProccessUpdate extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         Gson gson = new Gson();
-        
+        response.setContentType("json/application; charset=UTF-8");
         String sId = request.getParameter("id");
         if (sId != null) {
             int iId = Integer.parseInt(sId);

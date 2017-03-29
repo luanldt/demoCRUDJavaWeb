@@ -26,7 +26,6 @@ public class Systemuserhelper {
 //            this.session = HibernateUtil.getSessionFactory().openSession();
 //        }
 //    }
-
     public List<Systemuser> findAll() {
         List<Systemuser> systemusers = null;
         try {
@@ -37,20 +36,36 @@ public class Systemuserhelper {
             systemusers = (List<Systemuser>) q.list();
         } catch (Exception e) {
             System.out.println(e.getMessage());
-        } finally{
+        } finally {
             session.close();
         }
 
         return systemusers;
     }
-    
+
+    public List<Systemuser> findPagination(int firstResult, int maxResult) {
+        List<Systemuser> systemusers = null;
+        try {
+            // Bat dau truy van
+            //Transaction tx = session.getTransaction();
+            session = HibernateUtil.getSessionFactory().openSession();
+            Query q = session.createQuery("from Systemuser");
+            q.setMaxResults(maxResult);
+            q.setFirstResult(firstResult);
+            systemusers = (List<Systemuser>) q.list();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        } finally {
+            session.close();
+        }
+        return systemusers;
+    }
+
     public Systemuser findOne(int id) {
         Systemuser systemuser = null;
         try {
             session = HibernateUtil.getSessionFactory().openSession();
-            Query q = session.createQuery("from Systemuser where id = :id");
-            systemuser = (Systemuser) q.setInteger("id", id).list().get(0);
-            
+            systemuser = this.getSingle(id);
         } catch (Exception e) {
             System.out.println(e.getMessage());
         } finally {
@@ -58,7 +73,7 @@ public class Systemuserhelper {
         }
         return systemuser;
     }
-    
+
     public boolean create(Systemuser systemuser) {
         boolean result = false;
         try {
@@ -75,7 +90,7 @@ public class Systemuserhelper {
         }
         return result;
     }
-    
+
     public boolean update(Systemuser systemuser) {
         boolean result = false;
         try {
@@ -85,28 +100,47 @@ public class Systemuserhelper {
             session.update(systemuser);
             tx.commit();
             result = true;
-            
+
         } catch (Exception e) {
             System.out.println(e.getMessage());
         } finally {
             session.close();
         }
-        
+
         return result;
     }
-    
+
     public boolean delete(int id) {
         boolean result = false;
         try {
             session = HibernateUtil.getSessionFactory().openSession();
 //            Transaction tx = session.getTransaction();
             Transaction tx = session.beginTransaction();
-            Query q = session.createQuery("from Systemuser where id = :id");
-            Systemuser systemuser = (Systemuser) q.setInteger("id", id).list().get(0);
+            Systemuser systemuser = this.getSingle(id);
             session.delete(systemuser);
             tx.commit();
             result = true;
-            
+
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        } finally {
+            session.close();
+        }
+        return result;
+    }
+
+    public Systemuser getSingle(int id) {
+        Query q = session.createQuery("from Systemuser where id = :id");
+        return (Systemuser) q.setInteger("id", id).uniqueResult();
+    }
+
+    public List<Systemuser> query(String keyword) {
+        List<Systemuser> result = null;
+        try {
+            session = HibernateUtil.getSessionFactory().openSession();
+            Query q = session.createQuery("from Systemuser where ten like :keyword");
+            q.setString("keyword", "%" + keyword + "%");
+            result = q.list();
         } catch (Exception e) {
             System.out.println(e.getMessage());
         } finally {

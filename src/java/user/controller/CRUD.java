@@ -36,10 +36,11 @@ public class CRUD extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         Systemuserhelper systemuserhelper = new Systemuserhelper();
-        List<Systemuser> l = systemuserhelper.findAll();
-        request.setAttribute("listData", l);
+//       List<Systemuser> l = systemuserhelper.findAll();
+//        request.setAttribute("listData", l);
         RequestDispatcher dispatcher = request.getRequestDispatcher("CRUD.jsp");
         dispatcher.forward(request, response);
+      
     }
 
     /**

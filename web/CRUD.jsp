@@ -12,8 +12,13 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>CRUD User Application</title>
+
         <link href="static/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
         <link rel="stylesheet" href="static/css/jquery.dataTables.min.css" />
+        <link rel="stylesheet" href="static/css/dataTables.editor.css" />    
+        <link href="static/css/select.dataTables.min.css" rel="stylesheet" type="text/css"/>
+        <link href="static/css/buttons.dataTables.min.css" rel="stylesheet" type="text/css"/>
+        <link rel="stylesheet" href="static/css/editor.bootstrap.min.css" />    
     </head>
 
     <body>
@@ -33,18 +38,7 @@
                         <th>&nbsp;</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <!--                <tr>
-                                            <td>1</td>
-                                            <td>NGUYỄN VĂN CHÂU</td>
-                                            <td>1 / 1 / 1989</td>
-                                            <td>Nam</td>
-                                            <td>01 Lê Thánh Tôn, Quận 1, HCM</td>
-                                            <td><img width="120" height="120" src="static/images/Koala.jpg"></td>
-                                            <td><a href="javascript: void(0);">Edit</a> | <a href="javascript: void(0);">Delete</a> </td>
-                                        </tr>
-                    -->
-
+                <%-- <tbody>
                     <c:forEach var="e" items="${listData}">
                         <tr>
                             <td><c:out value="${e.id}"></c:out></td>
@@ -53,11 +47,10 @@
                             <td><c:out value="${e.gioiTinh}"></c:out></td>
                             <td><c:out value="${e.diaChiTamTru}"></c:out></td>
                             <td><img src="static/images/${e.hinhAnh}" width="120" height="120"/></td>
-                            <td><a href="javascript: void(0);" class="edit" data-id="${e.id}" data-title="Cập nhật nhân viên">Edit</a> | <a href="javascript: void(0);" onclick="return confirm('Are you sure?')" data-id="${e.id}" class="delete">Delete</a></td>
+                            <td><a href="javascript: void(0);" class="edit" data-id="${e.id}" data-title="Cập nhật nhân viên">Edit</a> | <a href="javascript: void(0);" data-id="${e.id}" class="delete">Delete</a></td>
                         </tr>
                     </c:forEach>
-
-                </tbody>
+                </tbody> --%>
             </table>
             <a href="javascript:void(0);" data-title="Thêm nhân viên" class="btn btn-info glyphicon glyphicon-plus add">Thêm nhân viên</a>
             <!-- Modal for create and edit -->
@@ -98,7 +91,7 @@
                                 <div class="form-group">
                                     <label class="control-label col-md-4" for="gioiTinhNam">Giới tính</label>
                                     <div class="col-md-8">
-                                        <input class="radio-inline" id="gioiTinhNam" name="gioiTinh" type="radio" value="Nam" />Nam
+                                        <input class="radio-inline" checked="true" id="gioiTinhNam" name="gioiTinh" type="radio" value="Nam" />Nam
                                         <input class="radio-inline" id="gioiTinhNu" name="gioiTinh" type="radio" value="Nữ"/>Nữ
                                     </div>
                                 </div>
@@ -147,14 +140,109 @@
         <script src="static/js/jquery-2.2.4.min.js"></script>
         <script src="static/js/bootstrap.min.js"></script>
         <script src="static/js/jquery.dataTables.min.js"></script>
+        <script src="static/js/dataTables.tableTools.min.js"></script>
+        <script src="static/js/dataTables.buttons.min.js"></script>
+        <script src="static/js/dataTables.select.min.js"></script>
+        <script src="static/js/dataTables.editor.min.js"></script>
+        <script src="static/js/editor.bootstrap.min.js" type="text/javascript"></script>
+
         <script>
             $(document).ready(function () {
-                $("#tbNhanVien").DataTable();
+                var isUpdate = false;
+                var editor;
+                editor = new $.fn.dataTable.Editor({
+                    ajax: {url: 'ProcessData', method: "post"},
+                    table: '#tbNhanVien',
+                    idSrc: 'id',
+                    fields: [
+                        {
+                            label: "Mã nhân viên",
+                            name: "maNhanVien"
+                        },
+                        {
+                            label: "Họ nhân viên",
+                            name: "ho"
+                        },
+                        {
+                            label: "Tên nhân viên",
+                            name: "ten"
+                        },
+                        {
+                            label: "Mật khẩu",
+                            name: "matKhau",
+                            type: "password"
+                        },
+                        {
+                            label: "Giới tính",
+                            name: "gioiTinh",
+                            type: "radio",
+                            options: [
+                                {label: "Nam", value: 1},
+                                {label: "Nữ", value: 0}
+                            ]
+                        },
+                        {
+                            label: "Ngày sinh",
+                            name: "ngaySinh"
+                        },
+                        {
+                            label: "Nơi sinh",
+                            name: "noiSinh"
+                        },
+                        {
+                            label: "Địa chỉ thường trú",
+                            name: "diaChiThuongTru"
+                        },
+                        {
+                            label: "Địa chỉ tạm trú",
+                            name: "diaChiTamTru"
+                        },
+                        {
+                            label: "Image:",
+                            name: "image",
+                            type: "upload",
+                            display: function (id) {
+                                return '<img src="' + editor.file('images', id).webPath + '"/>';
+                            },
+                            noImageText: 'No image'
+                        }
+                    ]
+                });
+                var table = $("#tbNhanVien").DataTable({
+                    dom: "Bfrtip",
+                    processing: true,
+                    serverSide: true,
+                    ajax: 'ProcessData',
+                    rowId: 'id',
+                    columns: [
+                        {data: 'id'},
+                        {
+                            data: null,
+                            render: function (data, type, row) {
+                                return data['ho'] + " " + data['ten'];
+                            }
+                        },
+                        {data: 'ngaySinh'},
+                        {data: 'gioiTinh'},
+                        {data: 'noiSinh'},
+                        {data: 'hinhAnh'}
+                    ],
+                    select: true,
+                    buttons: [
+                        {extend: "create", editor: editor},
+                        {extend: "edit", editor: editor},
+                        {extend: "remove", editor: editor}
+                    ]
+                });
+
+               
+                
                 // Event for active edit or delete
                 $(".add").click(function () {
                     var title = $(this).data('title');
                     $('.modal-title').text(title);
                     $("#crudModal").modal('show');
+                    isUpdate = false;
                 });
                 $("#crudForm").submit(function (e) {
                     e.preventDefault();
@@ -166,8 +254,9 @@
                         processData: false,
                         contentType: false,
                         success: function (data) {
-                            console.log(data);
-                            console.log("Success");
+                            alert((isUpdate ? "Cập nhật " : "Thêm") + "thành công!");
+                            window.location.reload();
+
                         },
                         error: function (data) {
                             console.log(data);
@@ -176,6 +265,7 @@
                     });
                 });
                 $(".edit").click(function () {
+                    isUpdate = true;
                     var title = $(this).data('title');
                     var id = $(this).data('id');
                     if (id) {
@@ -196,7 +286,12 @@
                                 $("#tenNhanVien").val(data['ten']);
                                 $("#maNhanVien").val(data['maNhanVien']);
                                 $("#ngaySinh").val(data['ngaySinh']);
-                                $("#gioiTinh").val(data['gioiTinh']);   
+                                if (data['gioiTinh'] === 1) {
+                                    $("#gioiTinhNam").attr('checked', 'true');
+                                } else {
+                                    $("#gioiTinhNu").attr('checked', 'true');
+                                }
+
                             },
                             error: function (data) {
                                 alert("Khong the update " + data);
@@ -206,6 +301,8 @@
                     }
                 });
                 $(".delete").click(function () {
+                    if (!confirm("Bạn chắc chắn xóa?"))
+                        return;
                     var id = $(this).data('id');
                     if (id) {
                         $.ajax({
@@ -214,6 +311,7 @@
                             data: {id: id},
                             dataType: "json",
                             success: function (data) {
+                                alert("Xóa thành công!")
                                 window.location.reload(true);
                             },
                             error: function (data) {

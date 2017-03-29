@@ -7,7 +7,6 @@ package user.controller;
 
 import com.google.gson.Gson;
 import java.io.IOException;
-import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -33,6 +32,7 @@ public class ProccessDelete extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        response.setCharacterEncoding("UTF-8");
         Systemuserhelper s = new Systemuserhelper();
         Gson gson = new Gson();
         String sId = request.getParameter("id");
