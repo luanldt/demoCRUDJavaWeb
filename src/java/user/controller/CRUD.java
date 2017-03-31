@@ -6,17 +6,12 @@
 package user.controller;
 
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.Writer;
-import java.util.List;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import sun.rmi.server.Dispatcher;
 import user.model.*;
-import user.pojo.Systemuser;
 /**
  *
  * @author cod.f

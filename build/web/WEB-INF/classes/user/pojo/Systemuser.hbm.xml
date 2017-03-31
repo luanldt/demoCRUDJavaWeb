@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated Mar 27, 2017 4:41:29 PM by Hibernate Tools 4.3.1 -->
+<!-- Generated Mar 31, 2017 2:05:58 PM by Hibernate Tools 4.3.1 -->
 <hibernate-mapping>
     <class name="user.pojo.Systemuser" table="SYSTEMUSER" schema="dbo" catalog="HERP" optimistic-lock="version">
         <id name="id" type="int">
@@ -38,5 +38,11 @@
         <property name="hinhAnh" type="java.lang.String">
             <column name="HinhAnh" />
         </property>
+        <set name="userdiplomas" table="USERDIPLOMA" inverse="true" lazy="false" fetch="select">
+            <key>
+                <column name="UserId" />
+            </key>
+            <one-to-many class="user.pojo.Userdiploma" />
+        </set>
     </class>
 </hibernate-mapping>

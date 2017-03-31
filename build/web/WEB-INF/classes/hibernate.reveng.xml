@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE hibernate-reverse-engineering PUBLIC "-//Hibernate/Hibernate Reverse Engineering DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-reverse-engineering-3.0.dtd">
 <hibernate-reverse-engineering>
-    <schema-selection match-catalog="HERP" match-schema="dbo"/>
-    <type-mapping>
-        <sql-type jdbc-type="VARCHAR" hibernate-type="java.lang.String" />
-        <sql-type jdbc-type="NVARCHAR" hibernate-type="java.lang.String" />
-    </type-mapping>
-    <table-filter match-name="SYSTEMUSER"/>
+  <schema-selection match-catalog="HERP" match-schema="dbo"/>
+  <type-mapping>
+      <sql-type jdbc-type="NVARCHAR" hibernate-type="java.lang.String"></sql-type>
+      <sql-type jdbc-type="VARCHAR" hibernate-type="java.lang.String"></sql-type>
+      <sql-type jdbc-type="DATE" hibernate-type="java.util.Date"></sql-type>
+  </type-mapping>
 </hibernate-reverse-engineering>

@@ -9,5 +9,6 @@
     <property name="hibernate.connection.password">12345678</property>
     <property name="hibernate.current_session_context_class">thread</property>
     <mapping resource="user/pojo/Systemuser.hbm.xml"/>
+    <mapping resource="user/pojo/Userdiploma.hbm.xml"/>
   </session-factory>
 </hibernate-configuration>

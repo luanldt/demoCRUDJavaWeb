@@ -5,6 +5,7 @@
  */
 package user.model;
 
+import java.io.Serializable;
 import org.hibernate.Session;
 import user.pojo.*;
 import java.util.List;
@@ -74,21 +75,20 @@ public class Systemuserhelper {
         return systemuser;
     }
 
-    public boolean create(Systemuser systemuser) {
-        boolean result = false;
+    public String create(Systemuser systemuser) {
         try {
             session = HibernateUtil.getSessionFactory().openSession();
             Transaction tx = session.getTransaction();
             tx.begin();
-            session.saveOrUpdate(systemuser);
+            Serializable id = session.save(systemuser);
             tx.commit();
-            result = true;
+            return id.toString();
         } catch (Exception e) {
             System.out.println(e.getMessage());
         } finally {
             session.close();
         }
-        return result;
+        return null;
     }
 
     public boolean update(Systemuser systemuser) {

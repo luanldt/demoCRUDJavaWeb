@@ -117,7 +117,7 @@ public class ProccessCreate extends HttpServlet {
             Gson g = gsonBuilder.create();
             Systemuser systemuser = g.fromJson(builder.toString(), Systemuser.class);
             Systemuserhelper s = new Systemuserhelper();
-            if(!s.create(systemuser)){
+            if(null==s.create(systemuser)){
                 response.getWriter().write("Fail!!!");
             } else {
                 response.getWriter().write("Success");
