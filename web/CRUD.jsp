@@ -20,6 +20,7 @@
         <link href="static/css/buttons.dataTables.min.css" rel="stylesheet" type="text/css"/>
         <link href="static/css/knockout-file-bindings.css" rel="stylesheet" type="text/css"/>
         <link rel="stylesheet" href="static/css/editor.bootstrap.min.css" />    
+        <link href="static/css/style.main.css" rel="stylesheet" type="text/css"/>
     </head>
 
     <body>
@@ -44,102 +45,131 @@
             <!-- Modal for create and edit -->
             <!-- Modal -->
             <div id="crudModal" class="modal fade" role="dialog">
+
                 <div class="modal-dialog">
 
                     <!-- Modal content-->
                     <div class="modal-content">
-                        <form class="form-horizontal" id="crudForm" method="POST" enctype="multipart/form-data">
-                            <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                <h4 class="modal-title"></h4>
-                            </div>
-                            <div class="modal-body">
-                                <input type="hidden" name="id" data-bind="value: id" />
-                                <div class="form-group">
-                                    <label class="control-label col-md-4" for="maNhanVien">Mã nhân viên</label>
-                                    <div class="col-md-8">
-                                        <input data-bind="value: maNhanVien" class="form-control" id="maNhanVien" name="maNhanVien" />
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="control-label col-md-4" for="hoNhanVien">Họ tên nhân viên</label>
-                                    <div class="col-md-4">
-                                        <input class="form-control"  data-bind="value: ho" id="hoNhanVien" placeholder="Họ" name="ho" />
-                                    </div>
-                                    <div class="col-md-4">
-                                        <input class="form-control" data-bind="value: ten" id="tenNhanVien" placeholder="Tên" name="ten" />
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="control-label col-md-4" for="matKhau">Mật khẩu</label>
-                                    <div class="col-md-8">
-                                        <input class="form-control"  data-bind="value: matKhau" type="password" id="matKhau" name="matKhau" />
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="control-label col-md-4" for="gioiTinhNam">Giới tính</label>
-                                    <div class="col-md-8">
-                                        <label><input class="radio-inline" checked="true" id="gioiTinhNam" name="gioiTinh" type="radio" data-bind="checked: gioiTinh, value: 1" />Nam</label>
-                                        <label><input class="radio-inline" id="gioiTinhNu" name="gioiTinh" type="radio" data-bind="checked: gioiTinh, value: 0"/>Nữ</label>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="control-label col-md-4" for="ngaySinh">Ngày sinh</label>
-                                    <div class="col-md-8">
-                                        <input class="form-control" data-bind="value: ngaySinh" id="ngaySinh" name="ngaySinh" />
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="control-label col-md-4" for="noiSinh">Nơi sinh</label>
-                                    <div class="col-md-8">
-                                        <input class="form-control" data-bind="value: noiSinh" type="text" id="noiSinh" name="noiSinh" />
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="control-label col-md-4" for="diaChiThuongTru">Địa chỉ thường trú</label>
-                                    <div class="col-md-8">
-                                        <input class="form-control" data-bind="value: diaChiThuongTru" type="text" id="diaChiThuongTru" name="diaChiThuongTru" />
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="control-label col-md-4" for="diaChiTamTru">Địa chỉ tạm trú</label>
-                                    <div class="col-md-8">
-                                        <input class="form-control" data-bind="value: diaChiTamTru" type="text" id="diaChiTamTru" name="diaChiTamTru" />
-                                    </div>
-                                </div>
-                                <div class="form-group bangCap" data-bind="with: userdiploma">
-                                    <label class="control-label col-md-4">Bằng cấp</label>
-                                    <div class="col-md-8">
-                                        <p><input class="form-control" data-bind="value: tenBangCap" name="tenBangCap" placeholder="Tên bằng cấp"/></p>
-                                        <p><input class="form-control" data-bind="value: ngayCap" name="ngayCap" placeholder="Ngày cấp"/></p>
-                                        <p><input class="form-control" data-bind="value: noiCap" name="noiCap" placeholder="Nơi cấp"/></p>
-                                        <button type="button" class="addBangCap" data-bind="click: $root.addDiploma">+</button>
-                                    </div>
-                                </div>
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title"></h4>
+                        </div>
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <form class="form-horizontal" id="crudForm" data-bind="with: systemuser" method="POST" enctype="multipart/form-data">
+                                        <div class="modal-body">
+                                            <input type="hidden" name="id" data-bind="value: id" />
+                                            <div class="form-group">
+                                                <label class="control-label col-md-4" for="maNhanVien">Mã nhân viên</label>
+                                                <div class="col-md-8">
+                                                    <input data-bind="value: maNhanVien" class="form-control" id="maNhanVien" name="maNhanVien" />
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label col-md-4" for="hoNhanVien">Họ tên nhân viên</label>
+                                                <div class="col-md-4">
+                                                    <input class="form-control"  data-bind="value: ho" id="hoNhanVien" placeholder="Họ" name="ho" />
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <input class="form-control" data-bind="value: ten" id="tenNhanVien" placeholder="Tên" name="ten" />
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label col-md-4" for="matKhau">Mật khẩu</label>
+                                                <div class="col-md-8">
+                                                    <input class="form-control"  data-bind="value: matKhau" type="password" id="matKhau" name="matKhau" />
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label col-md-4" for="gioiTinhNam">Giới tính</label>
+                                                <div class="col-md-8">
+                                                    <label><input class="radio-inline" checked="true" id="gioiTinhNam" name="gioiTinh" type="radio" data-bind="checked: gioiTinh, value: 1" />Nam</label>
+                                                    <label><input class="radio-inline" id="gioiTinhNu" name="gioiTinh" type="radio" data-bind="checked: gioiTinh, value: 0"/>Nữ</label>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label col-md-4" for="ngaySinh">Ngày sinh</label>
+                                                <div class="col-md-8">
+                                                    <input class="form-control" data-bind="value: ngaySinh" id="ngaySinh" name="ngaySinh" />
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label col-md-4" for="noiSinh">Nơi sinh</label>
+                                                <div class="col-md-8">
+                                                    <input class="form-control" data-bind="value: noiSinh" type="text" id="noiSinh" name="noiSinh" />
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label col-md-4" for="diaChiThuongTru">Địa chỉ thường trú</label>
+                                                <div class="col-md-8">
+                                                    <input class="form-control" data-bind="value: diaChiThuongTru" type="text" id="diaChiThuongTru" name="diaChiThuongTru" />
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label col-md-4" for="diaChiTamTru">Địa chỉ tạm trú</label>
+                                                <div class="col-md-8">
+                                                    <input class="form-control" data-bind="value: diaChiTamTru" type="text" id="diaChiTamTru" name="diaChiTamTru" />
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label col-md-4" for="hinhAnh">Hình ảnh</label>
+                                                <div class="col-md-8">
+                                                    <input type="file" name="hinhAnh" id="hinhAnh" data-bind="value: hinhAnh" accept="image/*" />
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="col-md-8 col-md-offset-4">
+                                                    <img class="img-thumbnail" id="imgView" data-bind="visible: hinhAnh"/>
+                                                </div>
+                                            </div>
 
-                                <div class="form-group">
-                                    <label class="control-label col-md-4" for="hinhAnh">Hình ảnh</label>
-                                    <div class="col-md-8">
-                                        <input type="file" name="hinhAnh" id="hinhAnh" accept="image/*" />
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="col-md-8 col-md-offset-4">
-                                        <img class="img-thumbnail" id="imgView" data-bind="visible: hinhAnh, attr: { src : 'static/images/'+hinhAnh() }" />
-                                        <!--                                        <img class="img-thumbnail" id="imgView" data-bind="visible: hinhAnh(), attr: { src: 'static/images/'+hinhAnh() }"/>-->
-                                    </div>
-                                </div>
+                                        </div>
 
+                                    </form>
+                                </div>
+                                <div class="col-md-6">
+                                    <h5 class="h5">Thông tin bằng cấp</h5>
+                                    <table class="table" id="bangCapTable" data-bind="with:systemuser">
+                                        <thead>
+                                            <tr>
+                                                <th>STT</th>
+                                                <th>Tên bằng cấp</th>
+                                                <th>Nơi cấp</th>
+                                                <th>Ngày cấp</th>
+                                                <th>&nbsp;</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody data-bind="foreach: listDiploma">
+                                            <tr>
+                                                <td data-bind=""></td>
+                                                <td data-bind="text: tenBangCap"></td>
+                                                <td data-bind="text: noiCap"></td>
+                                                <td data-bind="text: ngayCap"></td>
+                                                <td>Remove | Edit</td>
+                                            </tr>
+                                        </tbody>
+
+                                    </table>
+                                    <div data-bind="with: diplomaField">
+                                        <input class="form-control" data-bind="value: tenBangCap" name="tenBangCap" placeholder="Tên bằng cấp"/>
+                                        <input class="form-control" data-bind="value: noiCap" name="tenBangCap" placeholder="Nơicấp"/>
+                                        <input class="form-control" data-bind="value: ngayCap" name="tenBangCap" placeholder="Ngày cấp"/>
+                                        <button type="button" class="" data-bind="click: $root.addBangCap">+</button>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="modal-footer">
-                                <button type="submit" class="btn btn-success" data-bind="click: save">Lưu thông tin</button>
-                                <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
-                            </div>
-                        </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-success" data-bind="click: $root.save">Lưu thông tin</button>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+                        </div>
                     </div>
 
                 </div>
             </div>
+
+
         </div>
         <script src="static/js/jquery-2.2.4.min.js"></script>
         <script src="static/js/bootstrap.min.js"></script>

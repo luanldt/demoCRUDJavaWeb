@@ -83,7 +83,7 @@ function notify(messege, type) {
 
 $(document).ready(function () {
 
-    // Gan su kien cho input file 
+// Gan su kien cho input file 
 
 
     var tbl = $("#tbNhanVien").DataTable({
@@ -127,62 +127,71 @@ $(document).ready(function () {
             }//onclick="edit(' + data.id + ')
         ]
     });
+//    function initViewModel() {
+//        var observableData = function () {
+//            var self = this;
+//            self.id = ko.observable('');
+//            self.maNhanVien = ko.observable('');
+//            self.ten = ko.observable('');
+//            self.ho = ko.observable('');
+//            self.noiSinh = ko.observable('');
+//            self.matKhau = ko.observable('');
+//            self.gioiTinh = ko.observable('1');
+//            self.ngaySinh = ko.observable('');
+//            self.diaChiThuongTru = ko.observable('');
+//            self.diaChiTamTru = ko.observable('');
+//            self.hinhAnh = ko.observable('');
+//        };
+//        return observableData;
+//    }
 
-    function initViewModel() {
-        var observableData = function () {
-            var self = this;
-            self.id = ko.observable('');
-            self.maNhanVien = ko.observable('');
-            self.ten = ko.observable('');
-            self.ho = ko.observable('');
-            self.noiSinh = ko.observable('');
-            self.matKhau = ko.observable('');
-            self.gioiTinh = ko.observable('1');
-            self.ngaySinh = ko.observable('');
-            self.diaChiThuongTru = ko.observable('');
-            self.diaChiTamTru = ko.observable('');
-            self.hinhAnh = ko.observable('');
-        };
-        return observableData;
-    }
+//    var vanBangModel = function() {
+//        self.tenBangCap = ko.observable('');
+//        self.noiCap = ko.observable('');
+//        self.ngayCap = ko.observable('');
+//        self.id = ko.observable('');
+//    }
 
     var viewModel = function () {
         var self = this;
-        self.id = ko.observable('');
-        self.maNhanVien = ko.observable('');
-        self.ten = ko.observable('');
-        self.ho = ko.observable('');
-        self.noiSinh = ko.observable('');
-        self.matKhau = ko.observable('');
-        self.gioiTinh = ko.observable(1);
-        self.ngaySinh = ko.observable('');
-        self.diaChiThuongTru = ko.observable('');
-        self.diaChiTamTru = ko.observable('');
-        self.hinhAnh = ko.observable('');
-        self.hinhAnh.subscribe(function(imgUrl) {
-             self.hinhAnh(imgUrl);
-        });
+        self.systemuser = {
+            id: ko.observable(''),
+            maNhanVien: ko.observable(''),
+            ten: ko.observable(''),
+            ho: ko.observable(''),
+            noiSinh: ko.observable(''),
+            matKhau: ko.observable(''),
+            gioiTinh: ko.observable(1),
+            ngaySinh: ko.observable(''),
+            diaChiThuongTru: ko.observable(''),
+            diaChiTamTru: ko.observable(''),
+            hinhAnh: ko.observable(''),
+            listDiploma: ko.observableArray([])
+        };
 
-        self.userdiplomas = ko.observableArray('');
-
-        self.userdiploma = {
+        self.diplomaField = {
             tenBangCap: ko.observable(''),
             ngayCap: ko.observable(''),
             noiCap: ko.observable('')
         };
+
+        self.addBangCap = function () {
+            if (self.systemuser.listDiploma.indexOf(ko.observable(self.diplomaField) < 0)) {
+                self.systemuser.listDiploma.push(ko.toJS(self.diplomaField));
+            }
+            self.diplomaField = {
+                tenBangCap: ko.observable(''),
+                ngayCap: ko.observable(''),
+                noiCap: ko.observable('')
+            };
+            console.log(ko.toJS(self.systemuser.listDiploma))
+        };
         self.save = function () {
+            console.log(self);
             var json = ko.toJSON(self);
             console.log(json);
         };
-        self.addDiploma = function () {
-            self.userdiplomas.push(self.userdiploma);
-            console.log(self.userdiplomas());
-        };
-        self.setHinhAnh = function (imgUrl) {
-            self.hinhAnh(imgUrl);
-        };
     };
-
     function _bindDataModel(dt) {
         var observableData = function (dt) {
             this.dt = ko.observable(function () {
@@ -194,21 +203,22 @@ $(document).ready(function () {
                 }
             };
         };
-        ko.cleanNode($("#crudForm")[0]);
+//        ko.cleanNode($("#crudForm")[);
         ko.applyBindings(new observableData(dt), $("#crudForm")[0]);
     }
 
 
 
-    // SU KIEN 
+// SU KIEN 
+    var model = new viewModel();
     $(".add").click(function () {
         $('.modal-title').text("Thêm nhân viên");
-        ko.cleanNode($("#crudForm")[0]);
-        ko.applyBindings(new viewModel(), $("#crudForm")[0]);
+        ko.cleanNode($("#crudModal")[0]);
+        ko.applyBindings(model, $("#crudModal")[0]);
         $("#crudModal").modal('show');
     });
 
-    $("#crudModal").on('shown.bs.modal', function () {
+    $(document).on('shown.bs.modal', $("#crudModal"), function () {
         $('input[type="file"]').on('change', function () {
             var formData = new FormData();
             formData.append('images', $(this)[0].files[0]);
@@ -218,18 +228,14 @@ $(document).ready(function () {
                 contentType: false,
                 processData: false
             }).then(function (data) {
-                var model = new viewModel();
-                model.hinhAnh(data);
-          
+                $("#imgView").attr("src", "static/images/" + model.systemuser.hinhAnh() + "?timestamp=" + new Date().getTime());
             });
         });
     });
-
     $("#crudForm").submit(function (e) {
         e.preventDefault();
         createOrUpdate();
     });
-
 //    $("#tbNhanVien").on('click', '.edit', function () {
 //        tbl = $("#tbNhanVien").DataTable();
 //        var dt = tbl.row().data();
@@ -241,14 +247,13 @@ $(document).ready(function () {
 
 
 
-    // VALIDATE FORM 
+// VALIDATE FORM 
     $.validator.addMethod(
             "ngaySinh",
             function (value, element) {
                 return value.match("^\\d\\d\\d\\d\/\\d\\d?\/\\d\\d?$");
             }
     );
-
     $("#crudForm").validate({
         rules: {
             maNhanVien: {
@@ -286,5 +291,4 @@ $(document).ready(function () {
         },
         debug: true
     });
-
 });

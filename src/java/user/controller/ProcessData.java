@@ -7,6 +7,8 @@ package user.controller;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import com.google.gson.reflect.TypeToken;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
@@ -65,10 +67,11 @@ public class ProcessData extends HttpServlet {
 //            List<Systemuser> systemusersPagination = systemuserhelper.findPagination(iStart, iLength);
             //postBackValue(systemusersAll, request, response, systemusersAll.size());
             StringBuilder builder = new StringBuilder();
-            for (Systemuser s : systemusersAll) {
-                s.setUserdiplomas(null);
-            }
-            String json = gson.toJson(systemusersAll);
+//            for (Systemuser s : systemusersAll) {
+//                s.setUserdiplomas(null);
+//            }
+            JsonElement json = gson.toJsonTree(systemusersAll, new TypeToken<List<Systemuser>>() {
+                        }.getType());
 //
             builder.append("{");
 //            builder.append("\"draw\":").append(draw).append(',');
